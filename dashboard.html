@@ -4,6 +4,19 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PetFinder Smart Collar</title>
+
+  <!-- PWA: Manifest -->
+  <link rel="manifest" href="manifest.json"/>
+
+  <!-- PWA: Meta tags para iOS (Safari no usa manifest para algunos) -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="PetFinder"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
+
+  <!-- PWA: Color de barra de estado Android Chrome -->
+  <meta name="theme-color" content="#0050cb" media="(prefers-color-scheme: light)"/>
+  <meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
@@ -246,7 +259,7 @@
 
 <div id="dashboardScreen" class="hidden h-screen overflow-hidden flex">
 
-  <aside class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col p-6 z-50 shadow-[0_4px_20px_rgba(0,0,0,.05)]">
+  <aside class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest border-r border-outline-variant/20 flex-col p-6 z-50 shadow-[0_4px_20px_rgba(0,0,0,.05)] hidden md:flex">
     <div class="mb-8">
       <h1 class="text-headline-md text-primary font-bold tracking-tight flex items-center gap-2">
         <span class="material-symbols-outlined fill-icon text-primary shrink-0">pets</span>
@@ -276,8 +289,12 @@
       </a>
     </nav>
     <button onclick="cargarDatos()" id="syncBtn"
-      class="mb-6 w-full bg-primary text-white text-label-caps font-bold py-3 rounded-lg shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+      class="mb-2 w-full bg-primary text-white text-label-caps font-bold py-3 rounded-lg shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
       <span class="material-symbols-outlined text-[18px]" id="syncIcon">sync</span> Sincronizar
+    </button>
+    <button onclick="instalarPWA()" id="btnInstalarPWA"
+      class="hidden mb-6 w-full bg-secondary text-white text-label-caps font-bold py-3 rounded-lg shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">install_mobile</span> Instalar app
     </button>
     <div class="pt-4 border-t border-outline-variant/20 space-y-1">
       <div class="px-4 py-2">
@@ -291,9 +308,9 @@
     </div>
   </aside>
 
-  <main class="ml-60 flex-1 h-screen overflow-y-auto bg-background">
+  <main class="md:ml-60 flex-1 h-screen overflow-y-auto bg-background pb-16 md:pb-0">
 
-    <header class="sticky top-0 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 flex items-center px-8 justify-between h-16">
+    <header class="sticky top-0 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 flex items-center px-4 md:px-8 justify-between h-16">
       <div class="flex items-center gap-3">
         <span class="text-headline-md text-primary font-bold">PetFinder Smart Collar</span>
         <span id="statusChip" class="chip-sync px-3 py-1 rounded-full text-label-caps flex items-center gap-1.5">
@@ -328,7 +345,7 @@
       </div>
     </header>
 
-    <section id="sectionDashboard" class="p-8 space-y-6">
+    <section id="sectionDashboard" class="p-4 md:p-8 space-y-4 md:space-y-6">
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
@@ -462,7 +479,7 @@
         </div>
       </div>
 
-      <div class="glass rounded-2xl px-8 py-5 flex items-center justify-around gap-6 shadow-[0_4px_20px_rgba(0,0,0,.05)]">
+      <div class="glass rounded-2xl px-4 md:px-8 py-4 md:py-5 grid grid-cols-2 md:flex md:items-center md:justify-around gap-4 md:gap-6 shadow-[0_4px_20px_rgba(0,0,0,.05)]">
         <div class="flex items-center gap-4">
           <div class="w-10 h-10 rounded-full bg-orange-50/10 flex items-center justify-center">
             <span class="material-symbols-outlined text-orange-500">thermometer</span>
@@ -472,7 +489,7 @@
             <p class="font-bold text-on-surface"><span id="barTempAvg">—</span> °C</p>
           </div>
         </div>
-        <div class="h-8 w-px bg-outline-variant/30"></div>
+        <div class="hidden md:block h-8 w-px bg-outline-variant/30"></div>
         <div class="flex items-center gap-4">
           <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
             <span class="material-symbols-outlined text-primary">directions_run</span>
@@ -482,7 +499,7 @@
             <p class="font-bold text-on-surface"><span id="barMov">—</span> eventos</p>
           </div>
         </div>
-        <div class="h-8 w-px bg-outline-variant/30"></div>
+        <div class="hidden md:block h-8 w-px bg-outline-variant/30"></div>
         <div class="flex items-center gap-4">
           <div class="w-10 h-10 rounded-full bg-violet-50/10 flex items-center justify-center">
             <span class="material-symbols-outlined text-violet-500">database</span>
@@ -492,7 +509,7 @@
             <p class="font-bold text-on-surface"><span id="barTotal">—</span></p>
           </div>
         </div>
-        <div class="h-8 w-px bg-outline-variant/30"></div>
+        <div class="hidden md:block h-8 w-px bg-outline-variant/30"></div>
         <div class="flex items-center gap-4">
           <div class="w-10 h-10 rounded-full bg-green-50/10 flex items-center justify-center">
             <span class="material-symbols-outlined text-secondary">wifi</span>
@@ -505,7 +522,7 @@
       </div>
     </section>
 
-    <section id="sectionHistorial" class="p-8 hidden">
+    <section id="sectionHistorial" class="p-4 md:p-8 hidden">
       <h2 class="text-headline-lg text-on-surface mb-6">Historial de lecturas</h2>
       <div class="bg-surface-container-lowest rounded-lg shadow-[0_4px_20px_rgba(0,0,0,.05)] border border-outline-variant/10 overflow-hidden">
         <div class="p-5 border-b border-outline-variant/15 flex items-center justify-between">
@@ -537,6 +554,36 @@
     </section>
 
   </main>
+
+  <!-- Bottom nav: mobile only -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t border-outline-variant/20 flex items-center justify-around h-16 px-2 shadow-[0_-4px_20px_rgba(0,0,0,.06)]">
+    <button onclick="showSection('dashboard')" id="bnDash"
+      class="flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-primary">
+      <span class="material-symbols-outlined fill-icon text-[24px]">dashboard</span>
+      <span class="text-[10px] font-bold">Panel</span>
+    </button>
+    <button onclick="showSection('historial')" id="bnHist"
+      class="flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-on-surface-variant">
+      <span class="material-symbols-outlined text-[24px]">history</span>
+      <span class="text-[10px] font-bold">Historial</span>
+    </button>
+    <button onclick="cargarDatos()"
+      class="flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-on-surface-variant">
+      <span class="material-symbols-outlined text-[24px]" id="syncIconMobile">sync</span>
+      <span class="text-[10px] font-bold">Sync</span>
+    </button>
+    <button onclick="instalarPWA()" id="bnInstall"
+      class="hidden flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-secondary">
+      <span class="material-symbols-outlined text-[24px]">install_mobile</span>
+      <span class="text-[10px] font-bold">Instalar</span>
+    </button>
+    <button onclick="cerrarSesion()"
+      class="flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-on-surface-variant">
+      <span class="material-symbols-outlined text-[24px]">logout</span>
+      <span class="text-[10px] font-bold">Salir</span>
+    </button>
+  </nav>
+
 </div>
 
 <script>
@@ -711,12 +758,22 @@ function mostrarDashboard() {
 function showSection(name) {
   document.getElementById("sectionDashboard").classList.toggle("hidden", name !== "dashboard");
   document.getElementById("sectionHistorial").classList.toggle("hidden", name !== "historial");
+  // Sidebar nav (desktop)
   document.getElementById("navDash").className = name === "dashboard"
     ? "nav-active flex items-center gap-3 px-4 py-3 rounded-lg transition-all"
     : "flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors";
   document.getElementById("navHist").className = name === "historial"
     ? "nav-active flex items-center gap-3 px-4 py-3 rounded-lg transition-all"
     : "flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors";
+  // Bottom nav (mobile)
+  const bnDash = document.getElementById("bnDash");
+  const bnHist = document.getElementById("bnHist");
+  if (bnDash) bnDash.className = name === "dashboard"
+    ? "flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-primary"
+    : "flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-on-surface-variant";
+  if (bnHist) bnHist.className = name === "historial"
+    ? "flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-primary"
+    : "flex flex-col items-center gap-0.5 px-4 py-2 rounded-xl text-on-surface-variant";
   return false;
 }
 
@@ -1009,6 +1066,47 @@ if (localStorage.getItem("theme") === "dark") {
     if (icon) icon.innerText = "light_mode";
   });
 }
+
+// ── PWA: Registro del Service Worker ──────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
+      .catch(err => console.warn('[PWA] Error al registrar SW:', err));
+  });
+}
+
+// ── PWA: Prompt de instalación ("Instalar app") ───────────────────────────
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Mostrar en sidebar (desktop) y bottom nav (mobile)
+  const btn = document.getElementById('btnInstalarPWA');
+  if (btn) btn.classList.remove('hidden');
+  const bnInstall = document.getElementById('bnInstall');
+  if (bnInstall) bnInstall.classList.remove('hidden');
+  bnInstall.style.display = 'flex';
+});
+
+function instalarPWA() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(result => {
+    if (result.outcome === 'accepted') {
+      showToast('success', '¡App instalada!', 'PetFinder se agregó a tu pantalla de inicio.');
+    }
+    deferredInstallPrompt = null;
+    const btn = document.getElementById('btnInstalarPWA');
+    if (btn) btn.classList.add('hidden');
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  showToast('success', 'App instalada', 'PetFinder ya está en tu pantalla de inicio.');
+  deferredInstallPrompt = null;
+});
 </script>
 </body>
 </html>
