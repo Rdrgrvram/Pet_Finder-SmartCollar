@@ -11,15 +11,12 @@
 
 import network, urequests, ujson, time, machine, math, gc
 from machine import Pin, UART, ADC
+from secrets import WIFI_SSID, WIFI_PASSWORD, SUPABASE_URL, SUPABASE_ANON_KEY
 
 print("Iniciando componentes...")
 time.sleep(2)
 
-# ── Credenciales WiFi y Supabase ────────────────────────────────────
-WIFI_SSID         = "ENTEL_HOGAR_2.4G"
-WIFI_PASSWORD     = "123456789"
-SUPABASE_URL      = "https://kjuoamogxpplpyaseeat.supabase.co"
-SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdW9hbW9neHBwbHB5YXNlZWF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTU1NDUsImV4cCI6MjA5MjM3MTU0NX0.ty8SNcnELPCKk43qoRJft4-8IVQz6GrSouoX4T188CQ"
+# ── Tablas Supabase ──────────────────────────────────────────────────
 TABLA_LECTURAS    = "lecturas_collar"
 TABLA_COMANDOS    = "comandos"
 INTERVALO_CICLO   = 10
